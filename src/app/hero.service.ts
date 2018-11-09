@@ -9,7 +9,7 @@ import { Observable, of } from 'rxjs';
 
 export class HeroService {
 
-  getHeroes():Hero[]{
+  getHeroes():Observable<Hero[]>{
     return of(HEROES);
   }
 
