@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Hero } from "./hero";
-import { HEROES } from "./mock-heroes";
 import { Observable, of } from 'rxjs';
 import { MessageService } from "./message.service";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -39,6 +38,7 @@ export class HeroService {
     );
   }
 
+  /** GET hero by id. Will 404 if id not found */
   getHero(id: number): Observable<Hero>{
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get<Hero>(url).pipe(
@@ -46,6 +46,16 @@ export class HeroService {
       catchError(this.handleError<Hero>(`getHero id=${id}`))
     );
   }
+
+
+  /** PUT: update the hero on the server */
+  updateHero(hero:Hero): Observable<any>{
+    return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
+      tap(_ => this.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
 
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
